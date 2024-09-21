@@ -16,7 +16,7 @@ import contractABI from "../NounsPuzzle.json"; // Make sure this path is correct
 
 const CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
 
-interface PuzzlePiecesProps { }
+interface PuzzlePiecesProps {}
 
 const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   const [isClient, setIsClient] = useState(false);
@@ -25,9 +25,9 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   const [bodyPieceNum, setBodyPieceNum] = useState<number>(0);
   const [accessoryPieceNum, setAccessoryPieceNum] = useState<number>(0);
   const [showArtwork, setShowArtwork] = useState<boolean>(false);
-  const [showTrait, setShowTrait] = useState<boolean>(false)
+  const [showTrait, setShowTrait] = useState<boolean>(false);
   const [argToMint, setArgToMint] = useState("head");
-  const [numToMint, setNumToMint] = useState<number>(0)
+  const [numToMint, setNumToMint] = useState<number>(0);
   const [provider, setProvider] =
     useState<ethers.providers.Web3Provider | null>(null);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
@@ -98,17 +98,46 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
         contract.getUnlockedPieces(userTokens[1]),
         contract.getUnlockedPieces(userTokens[2]),
       ]);
+
       setHeadPieceNum(Number(head));
-      if (headPieceNum == 9 && argToMint == "head") {
-        //mint
+      setBodyPieceNum(Number(body));
+      setAccessoryPieceNum(Number(accessory));
+
+      // Check if any piece type has reached 9 unlocked pieces and mint if necessary
+      if (Number(head) === 9) {
+        await mintNFT(userTokens[0]);
+      }
+      if (Number(body) === 9) {
+        await mintNFT(userTokens[1]);
+      }
+      if (Number(accessory) === 9) {
+        await mintNFT(userTokens[2]);
+      }
+
+      if (Number(head) == 9 && argToMint == "head") {
         setArgToMint("body");
         setNumToMint(1);
         setShowTrait(true);
       }
-      setBodyPieceNum(Number(body));
-      setAccessoryPieceNum(Number(accessory));
     } catch (error) {
       console.error("Error fetching unlocked pieces:", error);
+    }
+  };
+
+  const mintNFT = async (tokenId: number) => {
+    if (!signer) return;
+    try {
+      const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        contractABI,
+        signer
+      );
+      const tx = await contract.mintNFT(tokenId);
+      await tx.wait();
+      console.log(`NFT minted successfully for token ID ${tokenId}`);
+      // You might want to update the UI or state here to reflect the minted NFT
+    } catch (error) {
+      console.error(`Error minting NFT for token ID ${tokenId}:`, error);
     }
   };
 
