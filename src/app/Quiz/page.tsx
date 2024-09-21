@@ -38,21 +38,12 @@ const PuzzleNouns: React.FC = () => {
         console.log(`Button ${choice} was clicked!`);
         if (choice === Answer) {
             if (Index % 5 == 0) {
-                const response = await fetch("/api/mint", {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: "mintPiece" })
-                });
-                const data = await response.json();
-                if (data == "Success") {
-                    alert("Congradulations! You have earned a puzzle piece!");
-                    setShowLink(true);
-                } else {
-                    console.log("mint failed");
-                }
+                // add a piece
+
+                alert("Congradulations! You have earned a puzzle piece!");
+                setShowLink(true);
             }
             else {
-                alert("Correct! Let's move on!");
                 setIndex(prevIndex => prevIndex + 1);
             }
         } else {
