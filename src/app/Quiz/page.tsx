@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Header from "../FormArtwork/Header";
+import Header from "../PuzzleNoun/Header";
 import Footer from "../PuzzleNoun/Footer";
 import Link from "next/link";
 
