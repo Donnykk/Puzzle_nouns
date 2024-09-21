@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../FormArtwork/Header";
+import Header from "../PuzzleNoun/Header";
 import Build from "./Build";
 import Footer from "./Footer";
 import { ConnectButton } from "@rainbow-me/rainbowkit";

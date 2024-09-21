@@ -48,7 +48,6 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
     // For example, opening a modal or navigating to another page
     setShowArtwork(true);
     console.log("Form an Artwork button clicked!");
-    alert("Form an Artwork functionality to be implemented.");
   };
 
   return (
@@ -97,11 +96,11 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
           </div>
           <button
             onClick={handleFormArtwork}
-            className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+            className="max-w-[600px] self-center mt-6 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
           >
             Form an Artwork
           </button>
-          {showArtwork && <Artwork />}
+          {showArtwork && <Artwork/>}
           <Footer />
         </section>
       </main>

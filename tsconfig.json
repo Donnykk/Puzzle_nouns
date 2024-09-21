@@ -31,8 +31,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "src/app/ArtWork", "src/app/api/build/route.ts", "src/app/api/mint/route.js"  ],
+    ".next/types/**/*.ts",
+    "src/app/ArtWork",
+    "src/app/api/build/route.ts",
+    "src/app/api/mint/route.js"
+  ],
   "exclude": [
     "node_modules"
   ]
