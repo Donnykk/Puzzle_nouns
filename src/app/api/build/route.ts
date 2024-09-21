@@ -8,19 +8,36 @@ import { create } from 'ipfs-http-client';
 const OPENAI_API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/images/generations';
 
-const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
-
+let nft_urls = [];
+let piece_urls = [];
 let pic_index = 1;
 
-async function uploadImageToIPFS(imagePath: string) {
-    const file = fs.readFileSync(imagePath);
+// IPFS client
+const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+
+// Function to upload a file
+async function uploadPieceToIPFS(filePath: string) {
+    const file = fs.readFileSync(filePath);
     const result = await ipfs.add(file);
-    return result.path;
+    const imageUrl = `https://ipfs.infura.io/ipfs/${result.path}`;
+    return imageUrl;
 }
+
+async function uploadNFTToIPFS(filePath: string, metadata: sharp.Metadata, characteristic: string) {
+    const file = fs.readFileSync(filePath);
+    const result = await ipfs.add(file);
+    const imageUrl = `https://ipfs.infura.io/ipfs/${result.path}`;
+    const metadataResult = await ipfs.add(JSON.stringify(metadata));
+    const metadataUrl = `https://ipfs.infura.io/ipfs/${metadataResult.path}`;
+    const characteristicResult = await ipfs.add(JSON.stringify(characteristic));
+    const characteristicUrl = `https://ipfs.infura.io/ipfs/${characteristicResult.path}`;
+    return { imageUrl, metadataUrl, characteristicUrl };
+}
+
 
 async function generateNFT(prompt: string): Promise<string> {
     try {
-        const modifiedPrompt = `${prompt} and a pixel art character in the style of Nouns, featuring colorful, cartoonish character with oversized glasses and a unique hat and small body`;
+        const modifiedPrompt = `a pixel character featuring wearing oversized glasses and a unique hat and having small body and ${prompt}`;
         const response = await axios.post(
             API_URL,
             {
@@ -36,6 +53,7 @@ async function generateNFT(prompt: string): Promise<string> {
             }
         );
         const imageUrl = response.data.data[0].url;
+        console.log(imageUrl);
         return imageUrl;
     } catch (error) {
         console.error('Error generating NFT:', error);
@@ -43,21 +61,15 @@ async function generateNFT(prompt: string): Promise<string> {
     }
 }
 
-// Helper function to download and save the image
-async function downloadImage(imageUrl: string, filePath: string) {
-    const writer = fs.createWriteStream(filePath);
-    const response = await axios.get(imageUrl, { responseType: 'stream' });
-
-    response.data.pipe(writer);
-
-    return new Promise((resolve, reject) => {
-        writer.on('finish', resolve);
-        writer.on('error', reject);
-    });
+async function getImageMetadata(imageUrl: string) {
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const imageBuffer = Buffer.from(response.data);
+    const metadata = await sharp(imageBuffer).metadata();
+    return metadata
 }
 
+
 async function cutImageIntoPieces(imagePath: string, index: Number) {
-    const cids = [];
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++) {
             console.log(imagePath);
@@ -92,15 +104,16 @@ async function cutImageIntoPieces(imagePath: string, index: Number) {
 
             // Ensure width and height are positive integers
             if (width > 0 && height > 0) {
-                await image.extract({ left, top, width, height }).toFile(path.join(outputDir, `piece_${index}_${row}_${col}.png`));
-                const cid = await uploadImageToIPFS(path.join(outputDir, `piece_${index}_${row}_${col}.png`));
-                cids.push(cid);
+                const img = image.extract({ left, top, width, height });
+                await img.toFile(path.join(outputDir, `piece_${index}_${row}_${col}.png`));
+                const url = await uploadPieceToIPFS(path.join(outputDir, `piece_${index}_${row}_${col}.png`))
+                piece_urls.push(url);
+                console.log(url);
             } else {
                 console.warn(`Skipping extraction for row ${row}, col ${col} due to invalid size`);
             }
         }
     }
-    return cids;
 }
 
 
@@ -111,31 +124,17 @@ export async function POST(req: NextRequest) {
         if (!prompt) {
             return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
         }
-
         const imageUrl = await generateNFT(prompt);
-
         // Define the path to save the image
-        if (pic_index == 1) {
-            const filePath = path.join(process.cwd(), 'src/app/img/origin/origin1.png');
-            // Download and save the image locally
-            await downloadImage(imageUrl, filePath);
-            await cutImageIntoPieces(filePath, pic_index);
-            pic_index++;
-        } else if (pic_index == 2) {
-            const filePath = path.join(process.cwd(), 'src/app/img/origin/origin2.png');
-            // Download and save the image locally
-            await downloadImage(imageUrl, filePath);
-            await cutImageIntoPieces(filePath, pic_index);
-            pic_index++;
-        } else if (pic_index == 3) {
-            const filePath = path.join(process.cwd(), 'src/app/img/origin/origin3.png');
-            // Download and save the image locally
-            await downloadImage(imageUrl, filePath);
-            await cutImageIntoPieces(filePath, pic_index);
-            pic_index++;
-        } else {
-            alert("You already generated 3 pictures!");
-        }
+        const filePath = path.join(process.cwd(), 'src/app/img/origin/origin${pic_index}.png');
+        // Download and save the image locally
+        const metadata = await getImageMetadata(imageUrl);
+        console.log(metadata);
+        await cutImageIntoPieces(filePath, pic_index);
+        pic_index++;
+        const url = await uploadNFTToIPFS(filePath, metadata, prompt);
+        console.log(url);
+        nft_urls.push(url);
         return NextResponse.json({ imageUrl });
     } catch (error) {
         console.error('Error:', error);
