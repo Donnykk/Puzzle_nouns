@@ -16,7 +16,7 @@ import contractABI from "../NounsPuzzle.json"; // Make sure this path is correct
 
 const CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
 
-interface PuzzlePiecesProps {}
+interface PuzzlePiecesProps { }
 
 const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   const [isClient, setIsClient] = useState(false);
@@ -25,6 +25,9 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   const [bodyPieceNum, setBodyPieceNum] = useState<number>(0);
   const [accessoryPieceNum, setAccessoryPieceNum] = useState<number>(0);
   const [showArtwork, setShowArtwork] = useState<boolean>(false);
+  const [showTrait, setShowTrait] = useState<boolean>(false)
+  const [argToMint, setArgToMint] = useState("head");
+  const [numToMint, setNumToMint] = useState<number>(0)
   const [provider, setProvider] =
     useState<ethers.providers.Web3Provider | null>(null);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
@@ -33,7 +36,7 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   useEffect(() => {
     setIsClient(true);
     setCurrentUrl(window.location.href);
-
+    setShowTrait(false);
     const setupEthers = async () => {
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -96,6 +99,12 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
         contract.getUnlockedPieces(userTokens[2]),
       ]);
       setHeadPieceNum(Number(head));
+      if (headPieceNum == 9 && argToMint == "head") {
+        //mint
+        setArgToMint("body");
+        setNumToMint(1);
+        setShowTrait(true);
+      }
       setBodyPieceNum(Number(body));
       setAccessoryPieceNum(Number(accessory));
     } catch (error) {
@@ -151,9 +160,9 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   return (
     <>
       <Header />
-      <main className="flex overflow-hidden flex-col items-center px-0 pt-32 bg-white pb-[300px] max-md:px-5 max-md:py-16">
+      <main className="flex overflow-hidden flex-col items-center px-0 pt-12 bg-white pb-[300px] max-md:px-5 max-md:py-16">
         <section className="flex flex-col w-full max-w-[1600px] max-md:max-w-full">
-          <h1 className="self-center max-md:pt-24 font-bold text-black">
+          <h1 className="self-center max-md:pt-12 text-2xl font-bold text-black">
             Puzzle pieces ({headPieceNum + bodyPieceNum + accessoryPieceNum}/27)
           </h1>
           <div className="flex items-center self-center gap-4 justify-between mt-10 mr-10 max-w-[1200px]">
@@ -204,6 +213,7 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
             Form an Artwork
           </button>
           {showArtwork && <Artwork />}
+          {showTrait && <img src={`/${argToMint}/${numToMint}.svg`} />}
         </section>
       </main>
       <Footer />

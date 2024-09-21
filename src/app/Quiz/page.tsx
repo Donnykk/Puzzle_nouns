@@ -44,6 +44,7 @@ const PuzzleNouns: React.FC = () => {
                 setShowLink(true);
             }
             else {
+
                 setIndex(prevIndex => prevIndex + 1);
             }
         } else {
