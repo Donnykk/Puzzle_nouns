@@ -55,7 +55,11 @@ async function generateNFT(promptHead: number, promptBody: number, promptAccesso
 };
 
 async function generateRandomNum(prompt: string) {
-    return prompt.length;
+    let sum = 0;
+    for (let i = 0; i < prompt.length; i++) {
+        sum += prompt.charCodeAt(i) * (i + 1); // Weight by position
+    }
+    return sum;
 }
 
 export async function POST(req: NextRequest) {
@@ -64,11 +68,11 @@ export async function POST(req: NextRequest) {
         if (!promptHead || !promptBody || !promptAccessory) {
             return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
         }
-        const head = await generateRandomNum(promptHead);
-        const body = await generateRandomNum(promptBody);
-        const accessory = await generateRandomNum(promptAccessory);
+        const head = await generateRandomNum(promptHead) % 234;
+        const body = await generateRandomNum(promptBody) % 30;
+        const accessory = await generateRandomNum(promptAccessory) % 137;
         console.log({ head }, { body }, { accessory })
-        const imageUrl = await generateNFT(head % 234, body % 30, accessory % 137);
+        const imageUrl = await generateNFT(head, body, accessory);
         await generatePiece("head", head);
         await generatePiece("body", body);
         await generatePiece("accessory", accessory);

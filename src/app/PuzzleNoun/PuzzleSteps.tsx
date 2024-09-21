@@ -14,14 +14,14 @@ const steps = [
     title: "Build Nouns NFT",
     imageSrc:
       "https://cdn.builder.io/api/v1/image/assets/TEMP/92aef7bfe3fb0e62d78b1d4ca4331b8bb981bc1caa5a6dc2ed5cfba1a03e869d?placeholderIfAbsent=true&apiKey=0f10dcf47d4a4bb986b4f458dff7f90a",
-    to:"/BuildNft"
+    to: "/BuildNft"
   },
 ];
 
 const PuzzleSteps: React.FC = () => {
   return (
-    <section className="mt-28 w-full max-w-[1260px] max-md:mt-10 max-md:max-w-full">
-      <div className="flex gap-5 max-md:flex-col">
+    <section className="mt-20 w-full max-w-[1200px] self-center items-center max-md:mt-10 max-md:max-w-full flex justify-center">
+      <div className="flex gap-5 max-md:flex-col justify-center">
         {steps.map((step, index) => (
           <PuzzleStep key={index} {...step} />
         ))}

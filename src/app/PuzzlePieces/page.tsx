@@ -39,8 +39,9 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         setProvider(provider);
         try {
-          await provider.send("eth_requestAccounts", []);
-          const signer = await provider.getSigner();
+          // Request account access
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+          const signer = provider.getSigner();
           setSigner(signer);
         } catch (error) {
           console.error("User rejected connection", error);
@@ -155,7 +156,41 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
           <h1 className="self-center max-md:pt-24 font-bold text-black">
             Puzzle pieces ({headPieceNum + bodyPieceNum + accessoryPieceNum}/27)
           </h1>
-          {/* Rest of your JSX remains the same */}
+          <div className="flex items-center self-center gap-4 justify-between mt-10 mr-10 max-w-[1200px]">
+            <div className="flex items-center gap-4 text-lg">
+              Gain your missing pieces:
+              <Link href="/Quiz">
+                <button
+                  type="submit"
+                  className="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
+                  Quiz
+                </button>
+              </Link>
+              <div className="ml-2 flex space-x-2">
+                <FacebookShareButton url={currentUrl} hashtag="#NounsNFT">
+                  <div className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
+                    Share on Facebook
+                  </div>
+                </FacebookShareButton>
+                <TwitterShareButton
+                  url={currentUrl}
+                  title="Check out my completed puzzle on Nouns NFT!"
+                  hashtags={["NounsNFT"]}>
+                  <div className="px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-blue-500 transition">
+                    Share on Twitter
+                  </div>
+                </TwitterShareButton>
+                <LinkedinShareButton
+                  url={currentUrl}
+                  summary="Check out my completed puzzle on Nouns NFT!"
+                  source="Nouns NFT">
+                  <div className="px-4 py-2 bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 transition">
+                    Share on LinkedIn
+                  </div>
+                </LinkedinShareButton>
+              </div>
+            </div>
+          </div>
           <div className="mt-12 w-full max-md:mt-6 max-md:max-w-full flex justify-center items-center">
             <div className="flex gap-6 max-md:flex-col">
               <WoodenFrame>

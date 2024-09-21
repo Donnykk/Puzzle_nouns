@@ -36,7 +36,7 @@ const Artwork: React.FC = () => {
     return (
         <section className="flex flex-col items-center">
             <section className="flex flex-col items-center">
-                <h1>You have minted a new NFT!</h1>
+                <h1>You have minted a new artwork!</h1>
                 <section className="flex flex-col items-center">
                     {imageUrl && <img src={imageUrl} alt="Generated NFT" />}
                 </section>
