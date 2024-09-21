@@ -1,0 +1,12 @@
+CREATE DATABASE Quiz;
+
+use Quiz;
+
+CREATE TABLE QuizList (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Question VARCHAR(256) NOT NULL,
+    ChoiceA  VARCHAR(256),
+    ChoiceB  VARCHAR(256),
+    ChoiceC  VARCHAR(256),
+    Answer VARCHAR(256) NOT NULL
+);
