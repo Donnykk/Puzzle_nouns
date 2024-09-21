@@ -11,12 +11,6 @@ const steps = [
     to: "/PuzzlePieces"
   },
   {
-    title: "Form an Artwork",
-    imageSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/190941a49234a5cc99955e16da78324bd6f5eb5c05ea71b4e39cab1555a78128?placeholderIfAbsent=true&apiKey=0f10dcf47d4a4bb986b4f458dff7f90a",
-    to: "/FormArtwork"
-  },
-  {
     title: "Build Nouns NFT",
     imageSrc:
       "https://cdn.builder.io/api/v1/image/assets/TEMP/92aef7bfe3fb0e62d78b1d4ca4331b8bb981bc1caa5a6dc2ed5cfba1a03e869d?placeholderIfAbsent=true&apiKey=0f10dcf47d4a4bb986b4f458dff7f90a",
