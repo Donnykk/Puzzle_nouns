@@ -67,11 +67,10 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   return (
     <>
       <Header />
-      <main className="flex overflow-hidden flex-col items-center px-0 pt-32 bg-white pb-[300px] max-md:px-5 max-md:py-16">
+      <main className="flex overflow-hidden flex-col items-center px-0 pt-12 bg-white pb-[300px] max-md:px-5 max-md:py-16">
         <section className="flex flex-col w-full max-w-[1600px] max-md:max-w-full">
-
-          <h1 className="self-center max-md:pt-24 font-bold text-black">
-            Puzzle pieces (27/27)
+          <h1 className="self-center max-md:pt-10 font-bold text-black text-2xl">
+            Puzzle pieces ({headPieceNum + bodyPieceNum + accessoryPieceNum}/27)
           </h1>
           <div className="flex items-center self-center gap-4 justify-between mt-10 mr-10 max-w-[1200px]">
             <div className="flex items-center gap-4 text-lg">
