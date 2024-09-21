@@ -15,7 +15,10 @@ interface PuzzlePiecesProps { }
 const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   const [isClient, setIsClient] = useState(false); // Track if the component is running on client
   const [currentUrl, setCurrentUrl] = useState('');
-  const [pieceNum, setPieceNum] = useState<number>(1);
+  const [headPieceNum, setHeadPieceNum] = useState<number>(1);
+  const [bodyPieceNum, setBodyPieceNum] = useState<number>(1);
+  const [accessoryPieceNum, setAccessoryPieceNum] = useState<number>(1);
+
   const [showArtwork, setShowArtwork] = useState<boolean>(false);
 
   useEffect(() => {
@@ -23,25 +26,34 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
     setCurrentUrl(window.location.href);
 
     //update piece_num
-    setPieceNum(27);
+    setHeadPieceNum(8);
+    setBodyPieceNum(9);
+    setAccessoryPieceNum(9);
+
+    // if num reach 9, mint!
   }, []);
 
-  const headPuzzlePieces = Array.from({ length: Math.min(pieceNum, 9) }, (_, index) => ({
+  const headPuzzlePieces = Array.from({ length: headPieceNum }, (_, index) => ({
     src: `/pieces/piece_head_${index + 1}.png`
   }));
-  const bodyPuzzlePieces = Array.from({ length: (pieceNum - 9) > 0 ? Math.min(pieceNum - 9, 9) : 0 }, (_, index) => ({
+  const blankHeadPuzzlePieces = Array.from({ length: 9 - headPieceNum }, (_) => ({
+    src: "https://via.placeholder.com/150?text=Blank",
+  }));
+  const bodyPuzzlePieces = Array.from({ length: bodyPieceNum }, (_, index) => ({
     src: `/pieces/piece_body_${index + 1}.png`
   }));
-  const accessoryPuzzlePieces = Array.from({ length: (pieceNum - 18) > 0 ? Math.min(pieceNum - 18, 9) : 0 }, (_, index) => ({
+  const blankBodyPuzzlePieces = Array.from({ length: 9 - bodyPieceNum }, (_) => ({
+    src: "https://via.placeholder.com/150?text=Blank",
+  }));
+  const accessoryPuzzlePieces = Array.from({ length: accessoryPieceNum }, (_, index) => ({
     src: `/pieces/piece_accessory_${index + 1}.png`
   }));
-
-  const blankPuzzlePieces = Array.from({ length: 27 - pieceNum }, (_) => ({
+  const blankAccessoryPuzzlePieces = Array.from({ length: 9 - accessoryPieceNum }, (_) => ({
     src: "https://via.placeholder.com/150?text=Blank",
   }));
 
   // Combine small and blank puzzle pieces
-  const allPuzzlePieces = [...headPuzzlePieces, ...bodyPuzzlePieces, ...accessoryPuzzlePieces, ...blankPuzzlePieces];
+  const allPuzzlePieces = [...headPuzzlePieces, ...blankHeadPuzzlePieces, ...bodyPuzzlePieces, ...blankBodyPuzzlePieces, ...accessoryPuzzlePieces, ...blankAccessoryPuzzlePieces];
 
   const handleFormArtwork = () => {
     // Placeholder for future functionality
@@ -100,7 +112,7 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
           >
             Form an Artwork
           </button>
-          {showArtwork && <Artwork/>}
+          {showArtwork && <Artwork />}
           <Footer />
         </section>
       </main>
