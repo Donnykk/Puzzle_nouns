@@ -8,13 +8,18 @@ import Link from "next/link";
 import contractABI from "../NounsPuzzle.json"; // Make sure this path is correct
 import * as dotenv from "dotenv";
 
+//dotenv.config();
 dotenv.config();
+const PRIVATE_KEY = process.env.NEXT_PUBLIC_PRIVATE_KEY;
+console.log("asdasd" + PRIVATE_KEY);
+const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
+console.log("sakjdlkjd" + RPC_URL);
 
 const CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
-const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
-const RPC_URL = process.env.RPC_URL || "";
+
 
 const PuzzleNouns: React.FC = () => {
+
   const [Question, setQuestion] = useState("");
   const [ChoiceA, setChoiceA] = useState("");
   const [ChoiceB, setChoiceB] = useState("");
@@ -131,27 +136,49 @@ const PuzzleNouns: React.FC = () => {
       console.error("No user tokens available");
       return;
     }
-
-    const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-    const signer = new ethers.Wallet(PRIVATE_KEY, provider);
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
-
-    // Find a token that hasn't been fully unlocked
-    const tokenToUnlock = userTokens.find(
-      (tokenId) => (unlockedPieces[tokenId] || 0) < 9
-    );
-
-    if (!tokenToUnlock) {
-      console.log("All tokens are fully unlocked");
-      return;
-    }
+    console.log("PRIVATE_KEY:", PRIVATE_KEY!.substring(0, 6) + "..."); // Log first 6 characters
+    console.log("RPC_URL:", RPC_URL);
 
     try {
-      const tx = await contract.unlockPuzzlePiece(tokenToUnlock);
-      await tx.wait();
-      console.log(
-        `Puzzle piece unlocked successfully for token ${tokenToUnlock}`
+      // Create provider
+      const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+      console.log("Provider created");
+
+      // Check network connection
+      const network = await provider.getNetwork();
+      console.log("Connected to network:", network.name);
+
+      const wallet = new ethers.Wallet(PRIVATE_KEY!);
+
+      // Connect wallet to provider
+      const connectedWallet = wallet.connect(provider);
+      console.log("Wallet connected to provider");
+
+      // Create contract instance
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, connectedWallet);
+      console.log("Contract instance created");
+
+      // Find a token that hasn't been fully unlocked
+      const tokenToUnlock = userTokens.find(
+        (tokenId) => (unlockedPieces[tokenId] || 0) < 9
       );
+
+      if (!tokenToUnlock) {
+        console.log("All tokens are fully unlocked");
+        return;
+      }
+
+      console.log("Attempting to unlock piece for token:", tokenToUnlock);
+
+      // Call the contract method
+      const tx = await contract.unlockPuzzlePiece(tokenToUnlock);
+      console.log("Transaction sent:", tx.hash);
+
+      // Wait for transaction to be mined
+      const receipt = await tx.wait();
+      console.log("Transaction confirmed in block:", receipt.blockNumber);
+
+      console.log(`Puzzle piece unlocked successfully for token ${tokenToUnlock}`);
 
       // Update the unlocked pieces for this token
       setUnlockedPieces((prev) => ({
@@ -162,7 +189,8 @@ const PuzzleNouns: React.FC = () => {
       // Refetch user tokens to ensure we have the latest data
       fetchUserTokens();
     } catch (error) {
-      console.error("Error unlocking puzzle piece:", error);
+      console.error("Error in unlockPuzzlePiece:");
+      console.error(error);
     }
   };
 

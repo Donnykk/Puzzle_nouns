@@ -14,7 +14,6 @@ export async function GET() {
     try {
         const connection = await pool.getConnection()
         const [rows] = await connection.query('SELECT * FROM QuizList')
-        console.log(rows)
         connection.release()
         return NextResponse.json(rows)
     } catch (error) {
