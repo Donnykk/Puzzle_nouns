@@ -1,5 +1,4 @@
 "use client";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -15,7 +14,7 @@ const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "YOUR_PROJECT_ID",
   chains: [sepolia],
-  ssr: true, // If your dApp uses server side rendering (SSR)
+  ssr: false, // If your dApp uses server side rendering (SSR)
 });
 
 const queryClient = new QueryClient();

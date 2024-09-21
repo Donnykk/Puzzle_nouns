@@ -55,9 +55,11 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
   // Combine small and blank puzzle pieces
   const allPuzzlePieces = [...headPuzzlePieces, ...blankHeadPuzzlePieces, ...bodyPuzzlePieces, ...blankBodyPuzzlePieces, ...accessoryPuzzlePieces, ...blankAccessoryPuzzlePieces];
 
+  const handleClick = () => {
+    //add a piece 
+  }
+
   const handleFormArtwork = () => {
-    // Placeholder for future functionality
-    // For example, opening a modal or navigating to another page
     setShowArtwork(true);
     console.log("Form an Artwork button clicked!");
   };
@@ -80,17 +82,17 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
                 </button>
               </Link>
               <div className="ml-2 flex space-x-2">
-                <FacebookShareButton url={currentUrl} hashtag="#NounsNFT">
+                <FacebookShareButton onClick={handleClick} url={currentUrl} hashtag="#NounsNFT">
                   <div className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition" >
                     Share on Facebook
                   </div>
                 </FacebookShareButton>
-                <TwitterShareButton url={currentUrl} title="Check out my completed puzzle on Nouns NFT!" hashtags={["NounsNFT"]}>
+                <TwitterShareButton onClick={handleClick} url={currentUrl} title="Check out my completed puzzle on Nouns NFT!" hashtags={["NounsNFT"]}>
                   <div className="px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-blue-500 transition">
                     Share on Twitter
                   </div>
                 </TwitterShareButton>
-                <LinkedinShareButton url={currentUrl} summary="Check out my completed puzzle on Nouns NFT!" source="Nouns NFT">
+                <LinkedinShareButton onClick={handleClick} url={currentUrl} summary="Check out my completed puzzle on Nouns NFT!" source="Nouns NFT">
                   <div className="px-4 py-2 bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 transition">
                     Share on LinkedIn
                   </div>

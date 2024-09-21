@@ -20,7 +20,7 @@ const steps = [
 
 const PuzzleSteps: React.FC = () => {
   return (
-    <section className="mt-28 w-full max-w-[1260px] max-md:mt-10 max-md:max-w-full">
+    <section className="mt-28 w-full max-w-[1200px] self-center  items-center max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col">
         {steps.map((step, index) => (
           <PuzzleStep key={index} {...step} />
