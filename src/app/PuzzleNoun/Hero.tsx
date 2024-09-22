@@ -10,7 +10,7 @@ const Hero: React.FC = () => {
         className="absolute inset-0 object-cover w-full h-full z-0"
       />
       <h2 className="relative z-20 text-center text-2xl mt-80">
-        `Create your Nouns NFT and mint with educational questions!`
+        &quot;Create your Nouns NFT and mint with educational questions!&quot;
       </h2>
     </section>
   );
