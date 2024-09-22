@@ -5,7 +5,7 @@ import { useAccount, useWalletClient } from "wagmi";
 import { ethers } from "ethers";
 import contractABI from "../NounsPuzzle.json";
 
-const CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
+const CONTRACT_ADDRESS = "0xF941038E7196fdbF4FB54e01710207E00E7cD0Ab";
 
 const NFTBuild: React.FC = () => {
   const [promptHead, setPromptHead] = useState("");

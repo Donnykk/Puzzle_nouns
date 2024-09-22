@@ -14,7 +14,7 @@ import PuzzleGrid from "./PuzzleGrid";
 import Artwork from "./Artwork";
 import contractABI from "../NounsPuzzle.json"; // Make sure this path is correct
 
-const CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
+const CONTRACT_ADDRESS = "0xF941038E7196fdbF4FB54e01710207E00E7cD0Ab";
 
 interface PuzzlePiecesProps {}
 

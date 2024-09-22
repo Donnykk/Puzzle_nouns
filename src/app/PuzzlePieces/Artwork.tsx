@@ -5,7 +5,7 @@ import puzzleContractABI from "../NounsPuzzle.json";
 import { ethers } from "ethers";
 
 const COLLAGE_CONTRACT_ADDRESS = "0xc0a8B843fb5B06e09D1C00EDf50fc5b2FA2f0387";
-const PUZZLE_CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
+const PUZZLE_CONTRACT_ADDRESS = "0xF941038E7196fdbF4FB54e01710207E00E7cD0Ab";
 
 const Artwork: React.FC = () => {
   const [imageUrl, setImageUrl] = useState("");

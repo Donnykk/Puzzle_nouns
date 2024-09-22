@@ -15,7 +15,7 @@ console.log("asdasd" + PRIVATE_KEY);
 const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
 console.log("sakjdlkjd" + RPC_URL);
 
-const CONTRACT_ADDRESS = "0x1654Cf320fBaB4b0c8C56d8122663b3cf4acA67c";
+const CONTRACT_ADDRESS = "0xF941038E7196fdbF4FB54e01710207E00E7cD0Ab";
 
 
 const PuzzleNouns: React.FC = () => {
