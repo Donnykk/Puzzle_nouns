@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../FormArtwork/Header";
+import Header from "../PuzzleNoun/Header";
 import MainContent from "./word";
 import Footer from "../PuzzleNoun/Footer";
 const PuzzleNouns: React.FC = () => {
