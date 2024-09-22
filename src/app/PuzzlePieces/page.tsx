@@ -106,7 +106,16 @@ const PuzzlePieces: React.FC<PuzzlePiecesProps> = () => {
         setShowTrait(true);
       }
       setBodyPieceNum(Number(body));
+      if (bodyPieceNum == 9 && argToMint == "body") {
+        setArgToMint("accessory");
+        setNumToMint(1);
+        setShowTrait(true);
+      }
       setAccessoryPieceNum(Number(accessory));
+      if (accessoryPieceNum == 9 && argToMint == "accessory") {
+        setNumToMint(1);
+        setShowTrait(true);
+      }
     } catch (error) {
       console.error("Error fetching unlocked pieces:", error);
     }
